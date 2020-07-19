@@ -4,9 +4,13 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    name = models.CharField(blank=False, max_length=50)
-    phone = models.CharField(blank=False, null=True, max_length=50)
-    school = models.CharField(blank=False, null=True, max_length=50)
+    name = models.CharField(blank=False, max_length=20)
+    phone = models.CharField(blank=False, null=True, max_length=10)
+    school = models.CharField(blank=False, null=True, max_length=30)
+    token = models.CharField(null=True, max_length=44)
+    expire_time = models.DateTimeField(null=True, auto_now=False, auto_now_add=False)
+    uuid = models.CharField(null=True, max_length=100)
+    last_api_calling = models.DateTimeField(null=True, auto_now=False, auto_now_add=False)
 
     class Meta(AbstractUser.Meta):
         pass
@@ -15,3 +19,39 @@ class UploadData(models.Model):
     strength = models.FloatField()
     fk_exp_id = models.IntegerField()
     battery_level = models.IntegerField()
+
+class TCN(models.Model):
+    uid = models.CharField(max_length=100)
+    tcn = models.CharField(max_length=100)
+    src_uid = models.CharField(max_length=100)
+    ble_strength = models.FloatField()
+    exp_id = models.IntegerField()
+    current_user_motion_status = models.BooleanField()
+
+class TCN_RX(models.Model):
+    rx_muuid = models.CharField(max_length=100)
+    tx_muuid = models.CharField(max_length=100)
+    rx_tcn = models.CharField(max_length=100)
+    tcn = models.CharField(max_length=100)
+    rssi = models.FloatField()
+    distance = models.FloatField()
+    uxix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    upload_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    exp_id = models.CharField(null=True, max_length=2)
+
+class TCN_TX(models.Model):
+    tx_muuid = models.CharField(max_length=100)
+    tx_tcn = models.CharField(max_length=100)
+    own_tcn = models.CharField(max_length=100)
+    battery_level = models.IntegerField()
+    motion_status = models.BooleanField()
+    gps_status = models.BooleanField()
+    uxix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    upload_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    exp_id = models.CharField(null=True, max_length=2)
+
+class AttackLog(models.Model):
+    log = models.TextField(null=True)
+
+class GlobalSetting(models.Model):
+    exp_id = models.CharField(null=True, max_length=2)

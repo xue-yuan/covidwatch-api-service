@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(smeyr8lw6j$vmtqur9=nt=!ow@nhrk^8k*^+^mx8o^2crt2xa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['10.118.127.58', 'denon.connectivity.tw']
-
+# ALLOWED_HOSTS = ['10.118.127.58', 'denon.connectivity.tw']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -123,7 +123,9 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
+
+TIME_ZONE = 'Asia/Taipei'
 
 AUTH_USER_MODEL = 'users.User'
 
