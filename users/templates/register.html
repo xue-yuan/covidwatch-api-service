@@ -3,20 +3,37 @@
 {% block title %}Register{% endblock title %}
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-5">
-    <div class="card mt-5 mx-5">
+  <div class="col-lg-5">
+    <div class="card mt-5">
       <div class="card-body">
         <h1 class="card-title text-center">Register</h1>
-        {% if form.errors %}
+        {% comment %} {% if form.errors %}
             <div class="alert alert-danger">
                 <strong>Invalid data (◐‿◑)</strong>
             </div>
-        {% endif %}
+        {% endif %} {% endcomment %}
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <h4>Invalid Input (◐‿◑)</h4>
+              <ul>
+                {% for field in form %}
+                  {% if field.errors %}
+                    {% for error in field.errors %}
+                      <li>{{ error|escape }}</li>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </ul>
+              {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+              {% endif %}
+            </div>
+          {% endif %}
           <form action="" method="POST">
             {% csrf_token %}
             <div class="form-group">
-              <label for="id_username" class="text-muted">Username</label>
-              <input class="form-control" type="text" name="username" required minlengrh="8" maxlength="20" required="" id="id_username">
+              <label for="username" class="text-muted">Username</label>
+              <input class="form-control" type="text" name="username" required minlengrh="8" maxlength="20" required="" id="username">
             </div>
             <div class="form-group">
               <label for="id_email" class="text-muted">Email</label>

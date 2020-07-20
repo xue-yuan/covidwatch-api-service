@@ -14,6 +14,7 @@ from .models import UploadData, User
 from .models import TCN_RX, TCN_TX, AttackLog, GlobalSetting
 # Create your views here.
 
+@csrf_exempt
 def register(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -124,7 +125,7 @@ def upload_tcn_rx(request):
                     tcn=record['TCN'],
                     rssi=record['RSSI'],
                     distance=record['DISTANCE'],
-                    unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
+                    uxix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
                     exp_id=setting.exp_id
                 )
@@ -178,7 +179,7 @@ def upload_tcn_tx(request):
                     battery_level=record['BATTERY_LEVEL'],
                     motion_status=record['MOTION_STATUS'],
                     gps_status=record['GPS_STATUS'],
-                    unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
+                    uxix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
                     exp_id=setting.exp_id
                 )
