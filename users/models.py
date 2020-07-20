@@ -35,7 +35,7 @@ class TCN_RX(models.Model):
     tcn = models.CharField(max_length=100)
     rssi = models.FloatField()
     distance = models.FloatField()
-    uxix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    unix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     upload_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     exp_id = models.CharField(null=True, max_length=2)
 
@@ -46,7 +46,7 @@ class TCN_TX(models.Model):
     battery_level = models.IntegerField()
     motion_status = models.BooleanField()
     gps_status = models.BooleanField()
-    uxix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
+    unix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     upload_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     exp_id = models.CharField(null=True, max_length=2)
 
