@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    name = models.CharField(blank=False, max_length=20)
+    name = models.CharField(blank=False, null=True, max_length=20)
     phone = models.CharField(blank=False, null=True, max_length=10)
     school = models.CharField(blank=False, null=True, max_length=30)
     token = models.CharField(null=True, max_length=44)
@@ -29,8 +29,10 @@ class TCN(models.Model):
     current_user_motion_status = models.BooleanField()
 
 class TCN_RX(models.Model):
-    rx_muuid = models.CharField(max_length=100)
+    rx_muuid = models.CharField(null=True, max_length=100)
     tx_muuid = models.CharField(max_length=100)
+    rx_muuid_short = models.CharField(null=True, max_length=100)
+    tx_muuid_short = models.CharField(null=True, max_length=100)
     rx_tcn = models.CharField(max_length=100)
     tcn = models.CharField(max_length=100)
     rssi = models.FloatField()
@@ -40,6 +42,7 @@ class TCN_RX(models.Model):
     exp_id = models.CharField(null=True, max_length=2)
 
 class TCN_TX(models.Model):
+    tx_muuid_short = models.CharField(null=True, max_length=100)
     tx_muuid = models.CharField(max_length=100)
     tx_tcn = models.CharField(max_length=100)
     own_tcn = models.CharField(max_length=100)
@@ -51,7 +54,8 @@ class TCN_TX(models.Model):
     exp_id = models.CharField(null=True, max_length=2)
 
 class AttackLog(models.Model):
-    log = models.TextField(null=True)
+    blind_log = models.TextField(null=True)
+    unix_timestamp = models.DateTimeField(null=True, auto_now=False, auto_now_add=False)
 
 class GlobalSetting(models.Model):
     exp_id = models.CharField(null=True, max_length=2)

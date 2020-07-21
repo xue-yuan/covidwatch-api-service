@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as d_login
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
@@ -47,7 +47,7 @@ def login(request):
                 })
             d_login(request, user)
             token = secrets.token_urlsafe(32)
-            expire_time = datetime.datetime.now() + datetime.timedelta(minutes=30)
+            expire_time = datetime.datetime.now() + datetime.timedelta(days=3)
             user.token = token
             user.expire_time = expire_time
             user.last_api_calling = datetime.datetime.now()
@@ -67,31 +67,6 @@ def login(request):
     })
 
 @csrf_exempt
-def upload_data(request):
-    if request.POST:
-        token = request.POST.get('token')
-        uuid = request.POST.get('uuid')
-        user = User.objects.get(uuid=uuid)
-        if user.token < datetime.datetime.now():
-            return JsonResponse({'success': False, 'message': 'Token Expired'})
-
-        strength = request.POST.get('strength')
-        fk_exp_id = request.POST.get('fk_exp_id')
-        battery_level = request.POST.get('battery_level')
-
-        data = UploadData(strength=strength, fk_exp_id=fk_exp_id, battery_level=battery_level)
-        data.save()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False, 'message': 'Wrong Method'})
-
-@csrf_exempt
-def upload_tcn(request):
-    if request.method == 'POST':
-        data = json.load(request.body)
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False, 'message': 'Wrong Method'})
-
-@csrf_exempt
 def upload_tcn_rx(request):
     data = json.loads(request.body)
     uuid = data['uuid']
@@ -105,7 +80,7 @@ def upload_tcn_rx(request):
                 'message': 'Token Expired'
             })
         else:
-            expire_time = datetime.datetime.now() + datetime.timedelta(minutes=30)
+            expire_time = datetime.datetime.now() + datetime.timedelta(days=3)
             user.expire_time = expire_time
             user.save()
     else:
@@ -119,13 +94,14 @@ def upload_tcn_rx(request):
         for record in data['TCN_RX']:
             try:
                 tcn_rx = TCN_RX(
-                    rx_muuid=record['RX_MUUID'],
+                    rx_muuid_short=record['RX_MUUID_SHORT'],
+                    tx_muuid_short=record['TX_MUUID_SHORT'],
                     tx_muuid=record['TX_MUUID'],
                     rx_tcn=record['RX_TCN'],
                     tcn=record['TCN'],
                     rssi=record['RSSI'],
                     distance=record['DISTANCE'],
-                    uxix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
+                    unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
                     exp_id=setting.exp_id
                 )
@@ -159,7 +135,7 @@ def upload_tcn_tx(request):
                 'message': 'Token Expired'
             })
         else:
-            expire_time = datetime.datetime.now() + datetime.timedelta(minutes=30)
+            expire_time = datetime.datetime.now() + datetime.timedelta(days=3)
             user.expire_time = expire_time
             user.save()
     else:
@@ -173,13 +149,14 @@ def upload_tcn_tx(request):
         for record in data['TCN_TX']:
             try:
                 tcn_tx = TCN_TX(
+                    tx_muuid_short=record['TX_MUUID_SHORT'],
                     tx_muuid=record['TX_MUUID'],
                     tx_tcn=record['TX_TCN'],
                     own_tcn=record['OWN_TCN'],
                     battery_level=record['BATTERY_LEVEL'],
                     motion_status=record['MOTION_STATUS'],
                     gps_status=record['GPS_STATUS'],
-                    uxix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
+                    unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
                     exp_id=setting.exp_id
                 )
@@ -203,9 +180,16 @@ def upload_tcn_tx(request):
 def upload_attack_log(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        log = data['log']
-        attack = AttackLog(log=log)
-        attack.save()
+        for record in data:
+            print(record)
+            try:
+                attack = AttackLog(
+                    blind_log=record['blindLog'], 
+                    unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP'])
+                )
+                attack.save()
+            except:
+                return JsonResponse({'success': False})
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
@@ -219,3 +203,10 @@ def update_exp_id(request):
         setting.save()
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
+
+def apk_download(request):
+    file = open('static/assets/contact-tracing.apk','rb')
+    response = FileResponse(file)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="contact-tracing.apk"'
+    return response

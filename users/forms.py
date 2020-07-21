@@ -25,6 +25,4 @@ class LoginForm(forms.Form):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'name', 'phone', 'school', 'password1', 'password2')
-
-# validate 
+        fields = ('username', 'email', 'password1', 'password2')

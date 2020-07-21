@@ -25,8 +25,13 @@ SECRET_KEY = '(smeyr8lw6j$vmtqur9=nt=!ow@nhrk^8k*^+^mx8o^2crt2xa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['10.118.127.58', 'denon.connectivity.tw']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['10.118.127.58', 'denon.connectivity.tw']
+# ALLOWED_HOSTS = ['*']
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'covidwatch', 'static'),
+    os.path.join(BASE_DIR, 'users', 'static'),
+)
 
 # Application definition
 
@@ -133,3 +138,4 @@ AUTH_USER_MODEL = 'users.User'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
