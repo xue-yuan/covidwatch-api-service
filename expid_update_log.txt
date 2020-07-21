@@ -39,3 +39,5 @@ Traceback (most recent call last):
   File "/usr/lib/python3.6/json/decoder.py", line 357, in raw_decode
     raise JSONDecodeError("Expecting value", s, err.value) from None
 json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2020-07-21 13:23:32,844 - WARNING: Not Found: /favicon.ico
+2020-07-21 13:27:42,153 - WARNING: Not Found: /favicon.ico
