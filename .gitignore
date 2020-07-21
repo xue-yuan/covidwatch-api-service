@@ -5,5 +5,3 @@ __pycache__/
 *.pot
 venv/
 .DS_Store
-
-static/
