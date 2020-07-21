@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['10.118.127.58', 'denon.connectivity.tw']
 # ALLOWED_HOSTS = ['*']
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'covidwatch', 'static'),
     os.path.join(BASE_DIR, 'users', 'static'),

@@ -12,5 +12,6 @@ urlpatterns = [
     path('upload/tcn/rx', views.upload_tcn_rx, name='api_upload_tcn_rx'),
     path('upload/tcn/tx', views.upload_tcn_tx, name='api_upload_tcn_tx'),
     path('upload/attack/log', views.upload_attack_log, name='api_upload_attack_log'),
-    path('update/exp_id', views.update_exp_id, name='api_update_exp_id')
+    path('update/exp_id', views.update_exp_id, name='api_update_exp_id'),
+    path('download', views.apk_download, name='apk_download'),
 ]

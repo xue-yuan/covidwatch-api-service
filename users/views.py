@@ -8,10 +8,18 @@ from django.utils import timezone
 import json
 import secrets
 import datetime
+import logging
 
 from . import forms
 from .models import UploadData, User
 from .models import TCN_RX, TCN_TX, AttackLog, GlobalSetting
+
+logging.basicConfig(
+    filename='expid_update_log.txt',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)-s: %(message)s'
+)
+
 # Create your views here.
 
 @csrf_exempt
@@ -22,8 +30,6 @@ def register(request):
     if request.POST and form.is_valid():
         form.save()
         return redirect('user_register_success')
-    else:
-        print(request.POST)
     return render(request, 'register.html', context=locals())
 
 def register_success(request):
@@ -181,7 +187,6 @@ def upload_attack_log(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         for record in data:
-            print(record)
             try:
                 attack = AttackLog(
                     blind_log=record['blindLog'], 
@@ -201,6 +206,7 @@ def update_exp_id(request):
         setting, created = GlobalSetting.objects.get_or_create(id=1)
         setting.exp_id = exp_id
         setting.save()
+        logging.info('Update Experiment ID: ' + str(exp_id))
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
 
