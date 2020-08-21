@@ -127,7 +127,10 @@ def upload_tcn_rx(request):
                     distance=record['DISTANCE'],
                     unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
-                    exp_id=setting.exp_id
+                    exp_id=setting.exp_id,
+                    latitude=record['LATITUDE'],
+                    longitude=record['LONGITUDE'],
+                    power=record['POWER'],
                 )
                 tcn_rx.save()
             except:
