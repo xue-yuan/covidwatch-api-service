@@ -130,7 +130,6 @@ def upload_tcn_rx(request):
                     exp_id=setting.exp_id,
                     latitude=record['LATITUDE'],
                     longitude=record['LONGITUDE'],
-                    power=record['POWER'],
                 )
                 tcn_rx.save()
             except:
@@ -185,7 +184,8 @@ def upload_tcn_tx(request):
                     gps_status=record['GPS_STATUS'],
                     unix_timestamp=datetime.datetime.fromtimestamp(record['UNIX_TIMESTAMP']),
                     upload_timestamp=datetime.datetime.now(),
-                    exp_id=setting.exp_id
+                    exp_id=setting.exp_id,
+                    power=record['POWER'],
                 )
                 tcn_tx.save()
             except:
