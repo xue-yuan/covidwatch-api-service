@@ -141,3 +141,8 @@ AUTH_USER_MODEL = 'users.User'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+OS_LIST = {
+    'ios': '1.0',
+    'android': '1.2',
+}

@@ -15,21 +15,7 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         pass
 
-class UploadData(models.Model):
-    strength = models.FloatField()
-    fk_exp_id = models.IntegerField()
-    battery_level = models.IntegerField()
-
-class TCN(models.Model):
-    uid = models.CharField(max_length=100)
-    tcn = models.CharField(max_length=100)
-    src_uid = models.CharField(max_length=100)
-    ble_strength = models.FloatField()
-    exp_id = models.IntegerField()
-    current_user_motion_status = models.BooleanField()
-
 class TCN_RX(models.Model):
-    rx_muuid = models.CharField(null=True, max_length=100)
     tx_muuid = models.CharField(max_length=100)
     rx_muuid_short = models.CharField(null=True, max_length=100)
     tx_muuid_short = models.CharField(null=True, max_length=100)

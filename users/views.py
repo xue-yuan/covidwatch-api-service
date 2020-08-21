@@ -11,16 +11,16 @@ import datetime
 import logging
 
 from . import forms
-from .models import UploadData, User
-from .models import TCN_RX, TCN_TX, AttackLog, GlobalSetting
+from .models import User, TCN_RX, TCN_TX, AttackLog, GlobalSetting
+from covidwatch.settings import OS_LIST
+
+# Create your views here.
 
 logging.basicConfig(
     filename='expid_update_log.txt',
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)-s: %(message)s'
 )
-
-# Create your views here.
 
 @csrf_exempt
 def register(request):
@@ -40,6 +40,18 @@ def login(request):
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+        os = request.POST.get('os')
+        version = request.POST.get('version')
+        if os == None:
+            return JsonResponse({
+                'success': False, 
+                'message': 'No OS Info'
+            })
+        if os not in OS_LIST:
+            return JsonResponse({
+                'success': False, 
+                'message': 'Wrong OS'
+            })
         uuid = request.POST.get('uuid')
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -51,6 +63,12 @@ def login(request):
                     'success': False, 
                     'message': 'Wrong UUID'
                 })
+            if OS_LIST[os] != version:
+                return JsonResponse({
+                    'success': False, 
+                    'message': 'Wrong Version with OS'
+                })
+
             d_login(request, user)
             token = secrets.token_urlsafe(32)
             expire_time = datetime.datetime.now() + datetime.timedelta(days=3)
