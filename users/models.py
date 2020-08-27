@@ -28,6 +28,7 @@ class TCN_RX(models.Model):
     exp_id = models.CharField(null=True, max_length=2)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    power = models.IntegerField()
 
 class TCN_TX(models.Model):
     tx_muuid_short = models.CharField(null=True, max_length=100)
@@ -40,7 +41,7 @@ class TCN_TX(models.Model):
     unix_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     upload_timestamp = models.DateTimeField(auto_now=False, auto_now_add=False)
     exp_id = models.CharField(null=True, max_length=2)
-    power = models.FloatField()
+    power = models.IntegerField()
 
 class AttackLog(models.Model):
     blind_log = models.TextField(null=True)

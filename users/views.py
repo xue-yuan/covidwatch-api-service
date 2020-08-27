@@ -130,6 +130,7 @@ def upload_tcn_rx(request):
                     exp_id=setting.exp_id,
                     latitude=record['LATITUDE'],
                     longitude=record['LONGITUDE'],
+                    power=record['POWER']
                 )
                 tcn_rx.save()
             except:
