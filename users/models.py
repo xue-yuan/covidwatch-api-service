@@ -28,7 +28,7 @@ class TCN_RX(models.Model):
     exp_id = models.CharField(null=True, max_length=2)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    power = models.IntegerField()
+    power = models.FloatField()
 
 class TCN_TX(models.Model):
     tx_muuid_short = models.CharField(null=True, max_length=100)
